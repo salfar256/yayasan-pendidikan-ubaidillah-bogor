@@ -1,13 +1,22 @@
-// Daftar foto galeri. Letakkan berkas di assets/foto/ lalu sesuaikan daftar ini.
+// Daftar foto galeri (berkas di assets/foto/).
 const GALERI = [
-  { src: 'assets/foto/galeri-1.jpg', alt: 'Pemandangan Bukit Karomah' },
-  { src: 'assets/foto/galeri-2.jpg', alt: 'Kegiatan belajar anak-anak' },
-  { src: 'assets/foto/galeri-3.jpg', alt: 'Kebun dan lahan pertanian' },
-  { src: 'assets/foto/galeri-4.jpg', alt: 'Sumber air di Bukit Karomah' },
-  { src: 'assets/foto/galeri-5.jpg', alt: 'Area peternakan' },
-  { src: 'assets/foto/galeri-6.jpg', alt: 'Suasana asri lingkungan sekolah' },
-  { src: 'assets/foto/galeri-7.jpg', alt: 'Bangunan sekolah' },
-  { src: 'assets/foto/galeri-8.jpg', alt: 'Kegiatan bersama' }
+  { src: 'assets/foto/05-gedung-tk-dan-sdit.jpg', alt: 'Gedung TK dan SDIT' },
+  { src: 'assets/foto/12-kolam-berenang.jpg', alt: 'Kolam berenang' },
+  { src: 'assets/foto/13-area-bermain-outdoor.jpg', alt: 'Area bermain outdoor' },
+  { src: 'assets/foto/07-ruang-kelas.jpg', alt: 'Ruang kelas' },
+  { src: 'assets/foto/04-kolam-dan-lingkungan.jpg', alt: 'Kolam dan lingkungan' },
+  { src: 'assets/foto/14-tampak-depan-gedung.jpg', alt: 'Tampak depan gedung' },
+  { src: 'assets/foto/09-aula-serbaguna.jpg', alt: 'Aula serbaguna' },
+  { src: 'assets/foto/10-aula-indoor.jpg', alt: 'Aula indoor' },
+  { src: 'assets/foto/06-koridor-sekolah.jpg', alt: 'Koridor sekolah' },
+  { src: 'assets/foto/08-tempat-wudhu.jpg', alt: 'Tempat wudhu' },
+  { src: 'assets/foto/02-gerbang-utama.jpg', alt: 'Gerbang utama' },
+  { src: 'assets/foto/01-pintu-masuk.jpg', alt: 'Pintu masuk' },
+  { src: 'assets/foto/03-lapangan-parkir.jpg', alt: 'Lapangan parkir' },
+  { src: 'assets/foto/05-kegiatan-kolam-ikan.jpg', alt: 'Kegiatan di kolam ikan' },
+  { src: 'assets/foto/01-kegiatan-aula.jpg', alt: 'Kegiatan di aula' },
+  { src: 'assets/foto/02-kegiatan-aula.jpg', alt: 'Kegiatan di aula terbuka' },
+  { src: 'assets/foto/03-foto-bersama-pramuka.jpg', alt: 'Foto bersama kegiatan Pramuka' }
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -55,16 +64,15 @@ document.addEventListener('DOMContentLoaded', () => {
         lightbox.classList.add('open');
       });
       img.style.cursor = 'zoom-in';
-      const empty = document.createElement('span');
-      empty.className = 'g-empty';
-      empty.textContent = item.alt;
-      fig.append(img, empty);
+      const cap = document.createElement('figcaption');
+      cap.textContent = item.alt;
+      fig.append(img, cap);
       grid.appendChild(fig);
     });
   }
 
   // Animasi muncul saat digulir
-  document.querySelectorAll('.section-head, .pillar, .level, .split-copy, .split-media, .karomah-inner, .legacy-inner, .join-inner, .nature-item')
+  document.querySelectorAll('.section-head, .pillar, .level, .split-copy, .founders, .karomah-inner, .principal, .fee, .spmb-card, .video-inner, .legacy-inner, .join-inner, .nature-item')
     .forEach(el => el.classList.add('reveal'));
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(entries => {

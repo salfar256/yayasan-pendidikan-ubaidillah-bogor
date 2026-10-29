@@ -1,6 +1,6 @@
-# TK–SD Ibnu Aqil 2 · Bukit Karomah
+# TK & SDIT Ibnu Aqil 2 · Bukit Karomah
 
-Website statis (HTML/CSS/JS) untuk TK dan SD Ibnu Aqil 2, Bukit Karomah, Cihideung, Bogor.
+Website statis (HTML/CSS/JS) untuk TK Ibnu Aqil 2 dan SDIT Ibnu Aqil 2, Bukit Karomah — Kp. Cihideung Kramat, Desa Purwasari, Kec. Dramaga, Kabupaten Bogor 16680.
 Saat ini berada di bawah naungan **Yayasan Haji Agus Salim Bogor (YHASB)**, sehingga logo yang dipakai adalah logo YHASB.
 
 Target hosting: `tk-sd.ibnuaqileducationcenter.id`
@@ -16,17 +16,14 @@ assets/
   foto/             ← foto kegiatan & lokasi
 ```
 
-## Foto
+## Isi & sumber
 
-Letakkan foto di `assets/foto/` dengan nama berikut (format .jpg, lebar ±1600 px):
+Semua foto, logo, brosur, dan video diambil dari folder **YPUB** (dikompres untuk web).
+Kontak, biaya, jadwal, program unggulan, dan persyaratan SPMB 2027/2028 diambil dari brosur TK & SDIT Ibnu Aqil 2.
 
-| Berkas | Dipakai di |
-|---|---|
-| `hero.jpg` | Latar utama bagian atas |
-| `tentang.jpg` | Bagian "Kisah Kami" |
-| `galeri-1.jpg` … `galeri-8.jpg` | Galeri (keterangan bisa diubah di `assets/js/main.js`) |
-
-Bila foto belum ada, halaman tetap tampil rapi dengan latar warna pengganti.
+- Foto fasilitas: `assets/foto/` (daftar galeri di `assets/js/main.js`)
+- Brosur unduhan: `assets/brosur/`
+- Video perkenalan: `assets/video/`
 
 ## Unggah ke hosting
 
