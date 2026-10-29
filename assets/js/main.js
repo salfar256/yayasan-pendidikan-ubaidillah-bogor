@@ -1,26 +1,4 @@
-// Daftar foto galeri (berkas di assets/foto/).
-const GALERI = [
-  { src: 'assets/foto/05-gedung-tk-dan-sdit.jpg', alt: 'Gedung TK dan SDIT', estimasi: true },
-  { src: 'assets/foto/12-kolam-berenang.jpg', alt: 'Kolam berenang' },
-  { src: 'assets/foto/13-area-bermain-outdoor.jpg', alt: 'Area bermain outdoor' },
-  { src: 'assets/foto/07-ruang-kelas.jpg', alt: 'Ruang kelas' },
-  { src: 'assets/foto/04-kolam-dan-lingkungan.jpg', alt: 'Kolam dan lingkungan', estimasi: true },
-  { src: 'assets/foto/14-tampak-depan-gedung.jpg', alt: 'Tampak depan gedung', estimasi: true },
-  { src: 'assets/foto/09-aula-serbaguna.jpg', alt: 'Aula serbaguna' },
-  { src: 'assets/foto/10-aula-indoor.jpg', alt: 'Aula indoor' },
-  { src: 'assets/foto/06-koridor-sekolah.jpg', alt: 'Koridor sekolah' },
-  { src: 'assets/foto/08-tempat-wudhu.jpg', alt: 'Tempat wudhu' },
-  { src: 'assets/foto/02-gerbang-utama.jpg', alt: 'Gerbang utama' },
-  { src: 'assets/foto/01-pintu-masuk.jpg', alt: 'Pintu masuk', estimasi: true },
-  { src: 'assets/foto/03-lapangan-parkir.jpg', alt: 'Lapangan parkir' },
-  { src: 'assets/foto/05-kegiatan-kolam-ikan.jpg', alt: 'Kegiatan di kolam ikan' },
-  { src: 'assets/foto/01-kegiatan-aula.jpg', alt: 'Kegiatan di aula' },
-  { src: 'assets/foto/02-kegiatan-aula.jpg', alt: 'Kegiatan di aula terbuka' },
-  { src: 'assets/foto/03-foto-bersama-pramuka.jpg', alt: 'Foto bersama kegiatan Pramuka' }
-];
-
 document.addEventListener('DOMContentLoaded', () => {
-  // Tahun footer
   const tahun = document.getElementById('tahun');
   if (tahun) tahun.textContent = new Date().getFullYear();
 
@@ -33,59 +11,95 @@ document.addEventListener('DOMContentLoaded', () => {
       toggle.setAttribute('aria-expanded', String(open));
       toggle.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
     });
-    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      nav.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false');
-    }));
   }
 
-  // Galeri
-  const grid = document.getElementById('gallery-grid');
-  const lightbox = document.createElement('div');
-  lightbox.className = 'lightbox';
-  lightbox.innerHTML = '<button type="button" aria-label="Tutup">×</button><img alt="">';
-  document.body.appendChild(lightbox);
-  const lbImg = lightbox.querySelector('img');
-  const closeLb = () => lightbox.classList.remove('open');
-  lightbox.addEventListener('click', e => { if (e.target !== lbImg) closeLb(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+  // Lightbox: semua foto bertanda data-zoom bisa diperbesar
+  const items = [];
+  document.querySelectorAll('img[data-zoom]').forEach(img => {
+    items.push({ src: img.currentSrc || img.src, alt: img.alt, est: img.dataset.est === '1', el: img });
+  });
+  document.querySelectorAll('a[data-zoom-link]').forEach(a => {
+    items.push({ src: a.href, alt: a.textContent.trim(), est: false, el: a });
+  });
+  if (!items.length) return;
 
-  if (grid) {
-    GALERI.forEach(item => {
-      const fig = document.createElement('figure');
-      fig.className = 'reveal';
-      const img = new Image();
-      img.loading = 'lazy';
-      img.alt = item.alt;
-      img.src = item.src;
-      img.onerror = () => img.remove();
-      img.addEventListener('click', () => {
-        lbImg.src = item.src; lbImg.alt = item.alt;
-        lightbox.classList.add('open');
-      });
-      img.style.cursor = 'zoom-in';
-      const cap = document.createElement('figcaption');
-      cap.textContent = item.alt;
-      fig.append(img, cap);
-      if (item.estimasi) {
-        const tag = document.createElement('span');
-        tag.className = 'photo-note';
-        tag.textContent = 'Foto estimasi ketika bangunan selesai';
-        fig.appendChild(tag);
-      }
-      grid.appendChild(fig);
+  const box = document.createElement('div');
+  box.className = 'lightbox';
+  box.setAttribute('role', 'dialog');
+  box.setAttribute('aria-modal', 'true');
+  box.setAttribute('aria-label', 'Pratinjau foto');
+  box.innerHTML = '<span class="lb-count"></span>' +
+    '<button type="button" class="lb-btn lb-close" aria-label="Tutup">×</button>' +
+    '<button type="button" class="lb-btn lb-prev" aria-label="Foto sebelumnya">‹</button>' +
+    '<img alt=""><p class="lb-cap"></p>' +
+    '<button type="button" class="lb-btn lb-next" aria-label="Foto berikutnya">›</button>';
+  document.body.appendChild(box);
+  const bImg = box.querySelector('img');
+  const bCap = box.querySelector('.lb-cap');
+  const bCount = box.querySelector('.lb-count');
+  const multi = items.length > 1;
+  box.querySelector('.lb-prev').hidden = !multi;
+  box.querySelector('.lb-next').hidden = !multi;
+  let cur = 0, lastFocus = null;
+
+  const show = i => {
+    cur = (i + items.length) % items.length;
+    const it = items[cur];
+    bImg.src = it.src;
+    bImg.alt = it.alt;
+    bCap.innerHTML = '';
+    bCap.textContent = it.alt;
+    if (it.est) {
+      const s = document.createElement('small');
+      s.textContent = 'Foto estimasi ketika bangunan selesai';
+      bCap.appendChild(s);
+    }
+    bCount.textContent = multi ? (cur + 1) + ' / ' + items.length : '';
+  };
+  const open = i => {
+    lastFocus = document.activeElement;
+    show(i);
+    box.classList.add('open');
+    document.body.classList.add('lb-lock');
+    box.querySelector('.lb-close').focus();
+  };
+  const close = () => {
+    box.classList.remove('open');
+    document.body.classList.remove('lb-lock');
+    if (lastFocus) lastFocus.focus();
+  };
+
+  items.forEach((it, i) => {
+    const target = it.el.closest('figure') || it.el;
+    if (target.tagName !== 'A') {
+      target.setAttribute('tabindex', '0');
+      target.setAttribute('role', 'button');
+      target.setAttribute('aria-label', 'Perbesar foto: ' + it.alt);
+    }
+    target.addEventListener('click', e => { e.preventDefault(); open(i); });
+    target.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); }
     });
-  }
+  });
 
-  // Animasi muncul saat digulir
-  document.querySelectorAll('.section-head, .pillar, .level, .split-copy, .founders, .karomah-inner, .principal, .fee, .spmb-card, .video-inner, .legacy-inner, .join-inner, .nature-item')
-    .forEach(el => el.classList.add('reveal'));
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-  } else {
-    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
-  }
+  box.querySelector('.lb-close').addEventListener('click', close);
+  box.querySelector('.lb-prev').addEventListener('click', e => { e.stopPropagation(); show(cur - 1); });
+  box.querySelector('.lb-next').addEventListener('click', e => { e.stopPropagation(); show(cur + 1); });
+  box.addEventListener('click', e => { if (e.target === box) close(); });
+  document.addEventListener('keydown', e => {
+    if (!box.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') show(cur - 1);
+    if (e.key === 'ArrowRight') show(cur + 1);
+  });
+
+  // Geser di HP
+  let x0 = null;
+  box.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+  box.addEventListener('touchend', e => {
+    if (x0 === null || !multi) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
 });

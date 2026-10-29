@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tk-sd.ibnuaqileducationcenter.id/sitemap.xml
