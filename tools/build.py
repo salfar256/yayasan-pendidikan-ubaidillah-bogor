@@ -406,40 +406,51 @@ def unit_page(kind):
         name, logo, lw, lh = "TK Ibnu Aqil 2", "assets/img/logo-tk-ibnu-aqil.png", 120, 120
         visi = "Mewujudkan generasi muslim yang berakhlak mulia, mandiri, terampil, cerdas, dan kreatif."
         lead = "Taman kanak-kanak di Bukit Karomah. Anak bermain sambil belajar, dekat dengan alam."
-        progs = [("kaaba", "Praktik manasik haji"), ("book", "Bimbingan mengaji"), ("blocks", "Pembelajaran metode sentra"),
-                 ("pray", "Bimbingan praktik ibadah"), ("swim", "Berenang"), ("star", "Hafalan surat, hadits, dan doa harian"),
-                 ("bus", "Outing class"), ("palette", "Ekstrakurikuler"), ("image", "Media pembelajaran menarik")]
+        progs = [("manasik", "Praktik manasik haji"), ("mengaji", "Bimbingan mengaji"), ("sentra", "Pembelajaran metode sentra"),
+                 ("ibadah", "Bimbingan praktik ibadah"), ("berenang", "Berenang"), ("doa", "Hafalan surat, hadits, dan doa harian"),
+                 ("outing", "Outing class"), ("ekskul", "Ekstrakurikuler"), ("media", "Media pembelajaran menarik")]
+        siswa = ("assets/siswa/tk-formal.webp", "Siswa TK Ibnu Aqil 2 dengan seragam sekolah", 1300, 775)
+        seragam_foto = [("tk-seragam-formal", "Baju khas"), ("tk-seragam-olahraga", "Baju olahraga"), ("tk-seragam-putih", "Baju batik")]
+        brosur = [("assets/brosur/poster-spmb-tk-2027.jpg", "Poster SPMB TK Ibnu Aqil 2"),
+                  ("assets/brosur/brosur-tk-depan-2026.jpg", "Brosur TK halaman depan"),
+                  ("assets/brosur/brosur-tk-belakang-2026.jpg", "Brosur TK halaman belakang")]
         jadwal = [("Senin-Kamis", "07.30-11.00 WIB"), ("Jum'at", "07.30-09.30 WIB")]
         fotos = ['07-ruang-kelas', '13-area-bermain-outdoor', '12-kolam-berenang', '05-gedung-tk-dan-sdit']
         biaya = "Rp760.000 (putra) · Rp810.000 (putri)"
-        seragam = "Baju batik, baju olahraga, dan baju khas"
         drive = DRIVE_TK
         pdf = "assets/brosur/brosur-tk-ibnu-aqil-2.pdf"
     else:
         name, logo, lw, lh = "SDIT Ibnu Aqil 2", "assets/img/logo-sdit-ibnu-aqil.jpg", 110, 142
         visi = "Mewujudkan generasi yang beriman dan bertakwa, berilmu, berakhlak, berprestasi, mandiri, dan peduli lingkungan."
         lead = "Sekolah dasar Islam terpadu dengan sistem full day school dan program kepesantrenan."
-        progs = [("pray", "Bimbingan praktik ibadah"), ("book", "Bimbingan mengaji"), ("image", "Media pembelajaran menarik"),
-                 ("smile", "Program Happy School"), ("mosque", "Program kepesantrenan"), ("bus", "Outing class"),
-                 ("swim", "Fasilitas indoor dan outdoor"), ("sun", "Full day school")]
+        progs = [("ibadah", "Bimbingan praktik ibadah"), ("mengaji", "Bimbingan mengaji"), ("media", "Media pembelajaran menarik"),
+                 ("ekskul", "Program Happy School"), ("kepesantrenan", "Program kepesantrenan"), ("outing", "Outing class"),
+                 ("fasilitas", "Fasilitas indoor dan outdoor"), ("fullday", "Full day school")]
+        siswa = ("assets/siswa/sd-formal.webp", "Siswa SDIT Ibnu Aqil 2 dengan seragam sekolah", 1300, 880)
+        seragam_foto = [("sd-seragam-batik", "Baju batik"), ("sd-seragam-olahraga", "Baju olahraga")]
+        brosur = [("assets/brosur/poster-spmb-sdit-2027.jpg", "Poster SPMB SDIT Ibnu Aqil 2"),
+                  ("assets/brosur/brosur-sdit-ibnu-aqil-2.jpg", "Brosur SDIT Ibnu Aqil 2 lengkap")]
         jadwal = [("Senin-Kamis", "07.00-14.00 WIB"), ("Jum'at", "07.00-10.00 WIB")]
         fotos = ['05-gedung-tk-dan-sdit', '06-koridor-sekolah', '09-aula-serbaguna', '12-kolam-berenang']
         biaya = "Rp600.000 (laki-laki) · Rp650.000 (perempuan)"
-        seragam = "Baju batik dan baju olahraga"
         drive = DRIVE_SD
         pdf = "assets/brosur/brosur-sdit-ibnu-aqil-2.pdf"
-    prog_html = "".join(f"<li>{ic(i, 26)}<span>{t}</span></li>" for i, t in progs)
+    prog_html = "".join(f'<li><img src="assets/program/{i}.webp" alt="" width="64" height="64" loading="lazy"><span>{t}</span></li>' for i, t in progs)
+    sw, sh = siswa[2], siswa[3]
+    ser_html = "".join(f'<figure class="zoom seragam-item"><img src="assets/siswa/{f}.webp" alt="Siswa {name} memakai {t.lower()}" width="700" height="1050" loading="lazy" data-zoom><figcaption>{t}</figcaption></figure>' for f, t in seragam_foto)
+    br_html = "".join(f'<figure class="zoom brosur-show"><img src="{src}" alt="{alt}" width="1500" height="2000" loading="lazy" data-zoom><figcaption>{alt}</figcaption></figure>' for src, alt in brosur)
     jad_html = "".join(f"<div><dt>{d}</dt><dd>{j}</dd></div>" for d, j in jadwal)
     promo = ""
     if kind == 'sd':
         promo = f'<p class="promo">{ic("tag", 20)} <span>Khusus alumni TK Ibnu Aqil 2 dan 10 pendaftar pertama: <b>diskon 50%</b> dan <b>bonus tas sekolah</b>.</span></p>'
     body = f"""
 <section class="unit-head unit-head-{kind}"><div class="container unit-head-inner">
-  <div><nav class="crumb" aria-label="Lokasi halaman"><a href="index.html">Beranda</a> <span aria-hidden="true">›</span> <span>{name}</span></nav>
-  <h1>{name}</h1><p>{lead}</p>
+  <div class="unit-head-copy"><nav class="crumb" aria-label="Lokasi halaman"><a href="index.html">Beranda</a> <span aria-hidden="true">›</span> <span>{name}</span></nav>
+  <div class="unit-title"><img class="unit-logo" src="{logo}" alt="Logo {name}" width="{lw}" height="{lh}"><h1>{name}</h1></div>
+  <p>{lead}</p>
   <div class="hero-actions"><a class="btn btn-wa" href="{wa(f'Assalamualaikum, saya ingin bertanya tentang pendaftaran di {name}.')}" target="_blank" rel="noopener">{ic("whatsapp")} Tanya admin</a>
-  <a class="btn btn-light" href="pendaftaran.html">{ic("form")} Cara daftar</a></div></div>
-  <img class="unit-logo" src="{logo}" alt="Logo {name}" width="{lw}" height="{lh}">
+  <a class="btn btn-light" href="#brosur">{ic("image")} Lihat brosur</a></div></div>
+  <img class="unit-students" src="{siswa[0]}" alt="{siswa[1]}" width="{sw}" height="{sh}" fetchpriority="high">
 </div></section>
 
 <section class="section">
@@ -464,17 +475,25 @@ def unit_page(kind):
     <div class="facts">
       <p>{ic("sun", 22)} <b>Outdoor:</b> area bermain, lapangan olahraga, dan kolam berenang</p>
       <p>{ic("home", 22)} <b>Indoor:</b> ruang kelas, media edukasi, toilet, dan aula serbaguna</p>
-      <p>{ic("shirt", 22)} <b>Seragam:</b> {seragam}</p>
     </div>
     {strip(fotos)}
   </div>
 </section>
 
 <section class="section section-soft">
-  <div class="container dl-row">
-    <div>{ic("download", 30)}<div><h2>Brosur {name}</h2><p>Simpan brosurnya untuk dibaca nanti atau dikirim ke keluarga.</p></div></div>
-    <div class="dl-actions"><a class="btn" href="{pdf}" download>{ic("download", 20)} Unduh PDF</a>
-    <a class="btn btn-outline" href="{drive}" target="_blank" rel="noopener">{ic("drive", 20)} Google Drive</a></div>
+  <div class="container">
+    <h2 class="title">Seragam sekolah</h2>
+    <div class="seragam seragam-{len(seragam_foto)}">{ser_html}</div>
+  </div>
+</section>
+
+<section class="section" id="brosur">
+  <div class="container">
+    <div class="head"><h2 class="title">Brosur {name}</h2>
+    <div class="dl-actions"><a class="btn btn-small" href="{pdf}" download>{ic("download", 18)} Unduh PDF</a>
+    <a class="btn btn-small btn-outline" href="{drive}" target="_blank" rel="noopener">{ic("drive", 18)} Google Drive</a></div></div>
+    <p class="small">Ketuk brosur untuk melihat lebih jelas.</p>
+    <div class="brosur-show-grid brosur-show-{len(brosur)}">{br_html}</div>
   </div>
 </section>
 {cta()}
