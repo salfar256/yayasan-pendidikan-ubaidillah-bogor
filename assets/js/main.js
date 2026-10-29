@@ -1,17 +1,17 @@
 // Daftar foto galeri (berkas di assets/foto/).
 const GALERI = [
-  { src: 'assets/foto/05-gedung-tk-dan-sdit.jpg', alt: 'Gedung TK dan SDIT' },
+  { src: 'assets/foto/05-gedung-tk-dan-sdit.jpg', alt: 'Gedung TK dan SDIT', estimasi: true },
   { src: 'assets/foto/12-kolam-berenang.jpg', alt: 'Kolam berenang' },
   { src: 'assets/foto/13-area-bermain-outdoor.jpg', alt: 'Area bermain outdoor' },
   { src: 'assets/foto/07-ruang-kelas.jpg', alt: 'Ruang kelas' },
-  { src: 'assets/foto/04-kolam-dan-lingkungan.jpg', alt: 'Kolam dan lingkungan' },
-  { src: 'assets/foto/14-tampak-depan-gedung.jpg', alt: 'Tampak depan gedung' },
+  { src: 'assets/foto/04-kolam-dan-lingkungan.jpg', alt: 'Kolam dan lingkungan', estimasi: true },
+  { src: 'assets/foto/14-tampak-depan-gedung.jpg', alt: 'Tampak depan gedung', estimasi: true },
   { src: 'assets/foto/09-aula-serbaguna.jpg', alt: 'Aula serbaguna' },
   { src: 'assets/foto/10-aula-indoor.jpg', alt: 'Aula indoor' },
   { src: 'assets/foto/06-koridor-sekolah.jpg', alt: 'Koridor sekolah' },
   { src: 'assets/foto/08-tempat-wudhu.jpg', alt: 'Tempat wudhu' },
   { src: 'assets/foto/02-gerbang-utama.jpg', alt: 'Gerbang utama' },
-  { src: 'assets/foto/01-pintu-masuk.jpg', alt: 'Pintu masuk' },
+  { src: 'assets/foto/01-pintu-masuk.jpg', alt: 'Pintu masuk', estimasi: true },
   { src: 'assets/foto/03-lapangan-parkir.jpg', alt: 'Lapangan parkir' },
   { src: 'assets/foto/05-kegiatan-kolam-ikan.jpg', alt: 'Kegiatan di kolam ikan' },
   { src: 'assets/foto/01-kegiatan-aula.jpg', alt: 'Kegiatan di aula' },
@@ -67,6 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const cap = document.createElement('figcaption');
       cap.textContent = item.alt;
       fig.append(img, cap);
+      if (item.estimasi) {
+        const tag = document.createElement('span');
+        tag.className = 'photo-note';
+        tag.textContent = 'Foto estimasi ketika bangunan selesai';
+        fig.appendChild(tag);
+      }
       grid.appendChild(fig);
     });
   }
